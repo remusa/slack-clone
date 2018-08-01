@@ -1,0 +1,18 @@
+{% extends "layout.html" %} {% block heading %} Welcome to Flack {% endblock %} {% block body %}
+
+<main class="container-fluid">
+
+    {{ message }}
+
+    <form action="{{ url_for('index') }}" method="post">
+        <div class="form-group">
+            <label for="inputUsername">Enter your username</label>
+            <input type="text" class="form-control" id="inputUsername" name="inputUsername" aria-describedby="emailHelp" required/>
+        </div>
+
+        <button type="submit" name="" class="btn btn-primary">Submit</button>
+    </form>
+
+</main>
+
+{% endblock %}
