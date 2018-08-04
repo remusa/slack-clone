@@ -2,10 +2,10 @@
 
 <main class="container-fluid">
 
-    <h1>Welcome {{ username }} to
+    <h1>Welcome
+        <em>{{ username }}</em> to
         <strong>{{ channel }}</strong>
     </h1>
-    <!-- <h1>Welcome to the {{ channel }} channel</h1> -->
 
     <ul id="list">
         {% for item in messages_list %}
@@ -19,11 +19,10 @@
     <!-- action="{{ url_for('channel', channel = channel) }}" method="post" -->
     <div class="form-group">
         <label for="inputMessage">New Message</label>
-        <input type="text" class="form-control" id="inputMessage" name="inputMessage" aria-describedby="messageHelp" required/>
+        <input type="text" class="form-control" id="inputMessage" name="inputMessage" aria-describedby="messageHelp" />
     </div>
 
-    <button name="" class="btn btn-primary">Submit New Message</button>
-    <!-- type="submit"  -->
+    <button type="submit" name="" class="btn btn-primary">Submit New Message</button>
     <!-- </form> -->
 
 </main>

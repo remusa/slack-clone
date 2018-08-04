@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', () => {
         location.protocol + '//' + document.domain + ':' + location.port
     )
 
-    // When connection successfitemst
+    // When connection success
     socket.on("connect", () => {
         // On submit message
         document.querySelector("button").onclick = () => {
@@ -14,20 +14,23 @@ document.addEventListener('DOMContentLoaded', () => {
                 message: message,
                 channel: channel
             })
+
+            const list = document.querySelector("#list")
+            let listLength = list.querySelectorAll("li").length
+            if (listLength >= 5) {
+                list.removeChild(list.firstChild) //childNodes[0]
+            }
+
+            document.querySelector("#inputMessage").value = ""
         }
     })
 
-    // When a new message is announced, add it to the messages unordered itemst
+    // When a new message is announced, add new messages to the messages unordered list
     socket.on("channel messages", data => {
         const list = document.querySelector("#list")
-        let item = document.createElement("li")
-        const listLength = document.querySelectorAll("li").length
-
-        item.appendChild(document.createTextNode(data))
+        const item = document.createElement('li');
+        item.innerHTML = data;
+        // item.appendChild(document.createTextNode(data))
         list.appendChild(item)
-
-        if (listLength >= 5) {
-            list.removeChild(list.childNodes[0])
-        }
     })
 })

@@ -67,16 +67,6 @@ def channels():
 @app.route("/channel/<string:channel>")
 def channel(channel):
     username = session.get("user")
-    # current_channel = channel
-
-    # channel_list = channels_dictionary.get(channel)
-
-    # if request.method == "POST":
-    #     inputMessage = str(request.form.get("inputMessage"))
-    #     channel_list.append(username + ": " + inputMessage)
-
-    #     if len(messages_list) > MAX_MESSAGES:
-    #         messages_list.pop(0)
 
     return render_template("channel.html", username=username, channel=channel, messages_list=channels_dictionary.get(channel))
 
@@ -93,7 +83,7 @@ def submit(data):
     channel_list.append(new_message)
     print(*channel_list, sep=", ")
 
-    if len(channel_list) >= MAX_MESSAGES:
+    if len(channel_list) > MAX_MESSAGES:
         channel_list.pop(0)
 
     emit("channel messages", new_message, broadcast=True)
