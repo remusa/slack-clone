@@ -15,6 +15,11 @@ app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
 
+MAX_MESSAGES = 5
+channels_dictionary = {
+    "testchannel": ["user1: this is a message"]
+}
+
 
 @app.route("/", methods=["GET", "POST"])
 def index():
@@ -26,7 +31,14 @@ def index():
         session["user"] = username
         return redirect(url_for("channels"))
 
-    return render_template("index.html", channels_list=channels_list)
+    return render_template("index.html")
+
+
+@app.route("/logout")
+def logout():
+    session.pop("user", None)
+    flash("Successfully logged out")
+    return redirect(url_for("index"))
 
 
 @app.route("/channels", methods=["GET", "POST"])
@@ -37,68 +49,54 @@ def channels():
     else:
         username = session.get("user")
 
-    # print(channels_list)
+    for key, value in channels_dictionary.items():
+        print(key, value)
 
     if request.method == "POST":
         channel = str(request.form.get("inputChannel"))
 
-        if any(channel in s for s in channels_list):
+        if channel in channels_dictionary:
             flash("Channel already exists")
         else:
-            channels_list.append(channel)
+            flash("New channel created")
+            channels_dictionary[channel] = []
 
-    # flash("Welcome, " + session.get("user"))
-    return render_template("channels.html", username=username, channels_list=channels_list)
-
-
-channels_list = []
-
-messages_dictionary = {
-    "channel3": [{
-        "username": ["user1", "user2"],
-        "messages": ["hello", "hello"]
-    }]
-}
-
-usernames_list = []
-messages_list = []
-
-MAX_MESSAGES = 5
+    return render_template("channels.html", username=username, channels_dictionary=channels_dictionary)
 
 
-@app.route("/channel/<string:channel>", methods=["GET", "POST"])
+@app.route("/channel/<string:channel>")
 def channel(channel):
     username = session.get("user")
-    chat_list = []
+    # current_channel = channel
 
-    # if current channel exists
-    if any(channel in s for s in channels_list):
-        messages_list = messages_dictionary
-    # new channel
-    # else:
+    # channel_list = channels_dictionary.get(channel)
 
-    if request.method == "POST":
-        inputMessage = str(request.form.get("inputMessage"))
-        usernames_list.append(username)
-        messages_list.append(inputMessage)
+    # if request.method == "POST":
+    #     inputMessage = str(request.form.get("inputMessage"))
+    #     channel_list.append(username + ": " + inputMessage)
 
-        chat_list = []
-        if len(usernames_list) > MAX_MESSAGES or len(messages_list) > MAX_MESSAGES:
-            usernames_list.pop(0)
-            messages_list.pop(0)
+    #     if len(messages_list) > MAX_MESSAGES:
+    #         messages_list.pop(0)
 
-        for user, message in zip(usernames_list, messages_list):
-            chat_list.append([user, message])
-        #     chat_dictionary[user] = message
-
-    return render_template("channel.html", channel=channel, username=username, chat_list=chat_list)
+    return render_template("channel.html", username=username, channel=channel, messages_list=channels_dictionary.get(channel))
 
 
-@app.route("/logout")
-def logout():
-    session.pop("user", None)
-    flash("Successfully logged out")
-    return redirect(url_for("index"))
+@socketio.on("submit message")
+def submit(data):
+    username = session.get("user")
+    inputMessage = data["message"]
+    current_channel = data["channel"]
+    new_message = username + ": " + inputMessage
+
+    channel_list = channels_dictionary.get(current_channel)
+
+    channel_list.append(new_message)
+    print(*channel_list, sep=", ")
+
+    if len(channel_list) >= MAX_MESSAGES:
+        channel_list.pop(0)
+
+    emit("channel messages", new_message, broadcast=True)
 
 
 if __name__ == '__main__':

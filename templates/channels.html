@@ -21,12 +21,14 @@
         </thead>
 
         <tbody>
-            {% for c in channels_list %}
+            {% for channel in channels_dictionary %}
+
             <tr scope="row"></tr>
             <td>
-                <a class="" href="{{ url_for('channel', channel = c) }}">{{ c }}</a>
+                <a class="" href="{{ url_for('channel', channel = channel) }}">{{ channel }}</a>
             </td>
-            <td>{{ c }}</td>
+            <td>{{ channel }}</td>
+
             {% endfor %}
         </tbody>
     </table>

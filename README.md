@@ -15,7 +15,7 @@ Web Programming with Python and JavaScript
 
 We recommend that you try to meet the following milestones:
 
-- [ ] Complete the Display Name, Channel Creation, and Channel List steps.
+- [X] Complete the Display Name, Channel Creation, and Channel List steps.
 - [ ] Complete the Messages View and Sending Messages steps.
 - [ ] Complete the Remembering the Channel and Personal Touch steps.
 

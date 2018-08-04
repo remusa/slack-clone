@@ -2,47 +2,29 @@
 
 <main class="container-fluid">
 
-    <h1>Welcome {{ username }} to "{{ channel }}"</h1>
+    <h1>Welcome {{ username }} to
+        <strong>{{ channel }}</strong>
+    </h1>
     <!-- <h1>Welcome to the {{ channel }} channel</h1> -->
 
-    <ul>
-        {% for item in chat_list %}
-        <li>{{ item[0] }}: {{ item[1] }}</li>
+    <ul id="list">
+        {% for item in messages_list %}
+        <li>{{ item }}</li>
         {% endfor %}
     </ul>
 
-    <!-- <ul>
-        {% for list in chat_list %} {% for item in list %}
-        <li>{{ item }}: {{ item }}</li>
-        {% endfor%} {% endfor %}
-    </ul> -->
-
-    <!-- <table class="table" id="messagesTable">
-        <thead>
-            <th scope="col">Username</th>
-            <th scope="col">Message</th>
-        </thead>
-
-        <tbody>
-            {% for list in chat_list %}
-            <tr scope="row"></tr>
-
-            {% for item in list %}
-            <td> {{ item }} </td>
-            <td> </td> {% endfor%} {% endfor %}
-        </tbody>
-    </table> -->
-
     <hr>
 
-    <form action="{{ url_for('channel', channel = channel) }}" method="post">
-        <div class="form-group">
-            <label for="inputMessage">New Message</label>
-            <input type="text" class="form-control" id="inputMessage" name="inputMessage" aria-describedby="messageHelp" required/>
-        </div>
+    <!-- <form> -->
+    <!-- action="{{ url_for('channel', channel = channel) }}" method="post" -->
+    <div class="form-group">
+        <label for="inputMessage">New Message</label>
+        <input type="text" class="form-control" id="inputMessage" name="inputMessage" aria-describedby="messageHelp" required/>
+    </div>
 
-        <button type="submit" name="" class="btn btn-primary">Submit New Message</button>
-    </form>
+    <button name="" class="btn btn-primary">Submit New Message</button>
+    <!-- type="submit"  -->
+    <!-- </form> -->
 
 </main>
 
@@ -51,5 +33,7 @@
         <a href="{{ url_for('logout') }}">Logout</a>
     </div>
 </footer>
+
+<script src="{{ url_for('static', filename='channel.js') }}"></script>
 
 {% endblock %}
