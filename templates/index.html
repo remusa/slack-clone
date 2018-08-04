@@ -2,16 +2,18 @@
 
 <main class="container-fluid">
 
-    {{ message }}
+    {% if error %}
+    <p class=error>
+        <strong>Error:</strong> {{ error }} {% endif %}
 
-    <form action="{{ url_for('index') }}" method="post">
-        <div class="form-group">
-            <label for="inputUsername">Enter your username</label>
-            <input type="text" class="form-control" id="inputUsername" name="inputUsername" aria-describedby="emailHelp" required/>
-        </div>
+        <form action="{{ url_for('index') }}" method="post">
+            <div class="form-group">
+                <label for="inputUsername">Enter your username</label>
+                <input type="text" class="form-control" id="inputUsername" name="inputUsername" aria-describedby="emailHelp" required/>
+            </div>
 
-        <button type="submit" name="" class="btn btn-primary">Submit</button>
-    </form>
+            <button type="submit" name="" class="btn btn-primary">Submit</button>
+        </form>
 
 </main>
 

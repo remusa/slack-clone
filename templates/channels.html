@@ -1,0 +1,42 @@
+{% extends "layout.html" %} {% block heading %} Flack Channels {% endblock %} {% block body %}
+
+<main class="container-fluid">
+
+    <h1>Welcome, {{ username }}</h1>
+
+    <form action="{{ url_for('channels') }}" method="post">
+        <div class="form-group">
+            <label for="inputChannel">Create channel</label>
+            <input type="text" class="form-control" id="inputChannel" name="inputChannel" aria-describedby="emailHelp" required/>
+            <small id="channelHelp" class="form-text text-muted">You won't be able to create with an existing name</small>
+        </div>
+
+        <button type="submit" name="" class="btn btn-primary">Create channel</button>
+    </form>
+
+    <table class="table" id="channelsTable">
+        <thead>
+            <th scope="col">ID</th>
+            <th scope="col">Channel Name</th>
+        </thead>
+
+        <tbody>
+            {% for c in channels_list %}
+            <tr scope="row"></tr>
+            <td>
+                <a class="" href="{{ url_for('channel', channel = c) }}">{{ c }}</a>
+            </td>
+            <td>{{ c }}</td>
+            {% endfor %}
+        </tbody>
+    </table>
+
+</main>
+
+<footer class="footer">
+    <div class="container">
+        <a href="{{ url_for('logout') }}">Logout</a>
+    </div>
+</footer>
+
+{% endblock %}
