@@ -1,13 +1,9 @@
 import os
-import requests
-import datetime
 import time
 
-from flask import Flask, session, render_template, request, redirect, url_for, flash
+from flask import Flask, flash, redirect, render_template, request, session, url_for
 from flask_session import Session
 from flask_socketio import SocketIO, emit
-from collections import defaultdict
-
 
 app = Flask(__name__)
 app.config["SECRET_KEY"] = os.getenv("SECRET_KEY")
@@ -18,7 +14,7 @@ app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
 
 
-MAX_MESSAGES = 100
+MAX_MESSAGES = 10
 channels_dictionary = {"testchannel": ["user1: this is a message"]}
 
 
@@ -86,14 +82,14 @@ def channel(channel):
 @socketio.on("submit message")
 def submit(data):
     username = session.get("user")
-    inputMessage = data["message"]
+    input_message = data["message"]
     current_channel = data["channel"]
 
     timestamp = time.gmtime()
     readable = time.strftime("%Y-%m-%d %H:%M:%S", timestamp)
     print("readable: " + readable)
 
-    new_message = "[" + readable + "]\t" + username + ": " + inputMessage
+    new_message = "[" + readable + "]\t" + username + ": " + input_message
 
     channel_list = channels_dictionary.get(current_channel)
 
@@ -107,4 +103,7 @@ def submit(data):
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    # Bind to PORT if defined, otherwise default to 5000.
+    port = int(os.environ.get('PORT', 5000))
+    app.run(host='0.0.0.0', port=port)  # debug=True
+    # app.run(debug=True)

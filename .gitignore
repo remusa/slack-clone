@@ -1,5 +1,7 @@
-
 setup.md
 __pycache__/
 flask_session/
 .vscode/
+Flask-SocketIO-Chat-master/
+venv/
+.idea/

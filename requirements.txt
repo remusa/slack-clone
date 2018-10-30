@@ -1,3 +1,6 @@
 Flask
+Flask-Session
 Flask-SocketIO
 eventlet
+requests
+itsdangerous>=0.24,<1.0.0
