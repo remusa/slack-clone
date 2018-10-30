@@ -9,7 +9,7 @@ flask-socketio = "*"
 eventlet = "*"
 requests = "*"
 flask-session = "*"
-birdseye = "*"
+gunicorn = "*"
 
 [dev-packages]
 
